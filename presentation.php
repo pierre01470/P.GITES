@@ -42,10 +42,12 @@
         require_once "connect.php";
         require_once "classes/LodgeManager.php";
         require_once "classes/class.lodge.php";
+        require_once "classes/class.booking.php";
+        require_once "classes/BookingManager.php";
 
         /* ---------------------- RECUPERATION LISTE DONNEE BDD --------------------- */
         $manager = new LodgeManager($db);
-        $lodge = $manager->getListid(57);//a recuperer plus tard en get
+        $lodge = $manager->getListid($_GET['id']);
         ?>
         <section class="produit">
             <div class="affiche">
@@ -57,35 +59,46 @@
                     foreach (unserialize($lodge->getImage()) as $image) {
                         echo '<img class="mySlides" src="' . $image . '" alt="" width="500px" height="350px">';
                     } ?>
-                
-                <div class="w3-center">
-                    <div class="w3-section">
-                        <button class="w3-button w3-light-grey" onclick="plusDivs(-1)">❮ Prev</button>
-                        <button class="w3-button w3-light-grey" onclick="plusDivs(1)">Next ❯</button>
+
+                    <div class="w3-center">
+                        <div class="w3-section">
+                            <button class="w3-button w3-light-grey" onclick="plusDivs(-1)">❮ Prev</button>
+                            <button class="w3-button w3-light-grey" onclick="plusDivs(1)">Next ❯</button>
+                        </div>
+                        <button class="w3-button demo" onclick="currentDiv(1)">1</button>
+                        <button class="w3-button demo" onclick="currentDiv(2)">2</button>
+                        <button class="w3-button demo" onclick="currentDiv(3)">3</button>
+                        <button class="w3-button demo" onclick="currentDiv(4)">4</button>
                     </div>
-                    <button class="w3-button demo" onclick="currentDiv(1)">1</button>
-                    <button class="w3-button demo" onclick="currentDiv(2)">2</button>
-                    <button class="w3-button demo" onclick="currentDiv(3)">3</button>
-                    <button class="w3-button demo" onclick="currentDiv(4)">4</button>
                 </div>
             </div>
-                </div>
 
             <div class="reservation">
                 <a class="price">Prix:<?php
                                         $calculprice = $lodge->getPrice() * 7;
                                         echo $lodge->getPrice() . '€/ jours<br>';
                                         echo $calculprice . '€/ semaine'; ?></a>
-                <div class="calendrier"><img src="https://jcchauvel.files.wordpress.com/2017/03/calendrier-ouvert.png"></div>
+                <div class="calendrier"><img src="https://jcchauvel.files.wordpress.com/2017/03/calendrier-ouvert.png" alt=""></div>
                 <div class="form-reservation">
                     <form action="" method="post">
+                        <?php
+                        //ADD DATE
+                        if (isset($_POST['bookingBtn'])) {
+                            $managerBooking = new BookingManager($db);
+                            $addBooking = new Booking(array('idbooking' => 0, 'idlodge' => $_GET['id'], 'arrival' => $_POST['arrival'], 'departure' => $_POST['departure']));
+                            $managerBooking->addBooking($addBooking);
+                            var_dump($addBooking);
+                        } else {
+                            echo 'entree non valide';
+                        }
+                        ?>
                         <div>
                             <label class="case-rese" for="arrival">Arrivée:</label>
-                            <input type="date" name="arrival" id="start">
+                            <input type="date" name="arrival" id="start" min="<?= date('Y-m-d') ?>">
                         </div>
                         <div>
                             <label class="case-rese" for="departure">Départ:</label>
-                            <input type="date" name="departure" id="leave">
+                            <input type="date" name="departure" id="leave" min="<?= date('Y-m-d') ?>">
                         </div>
                         <div>
                             <label class="case-rese" for="firstname">Prénom:</label>
@@ -108,6 +121,7 @@
                                 <button id="bookingBtn" name="bookingBtn" type="submit">Reserver</button>
                         </div>
                         <?php
+                        //SEND MAIL
                         $firstname = $_POST['firstname'];
                         $lastname = $_POST['lastname'];
                         $email = $_POST['email'];

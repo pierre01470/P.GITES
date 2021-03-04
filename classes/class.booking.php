@@ -1,10 +1,10 @@
 <?php
-class Customer
+class Booking
 {
-    private $_idCustomer;
-    private $_firstname;
-    private $_lastname;
-    private $_email;
+    private $_idBooking;
+    private $_idLodge;
+    private $_arrival;
+    private $_departure;
 
 
     /* -------------------------------- CONSTRUCT ------------------------------- */
@@ -29,43 +29,43 @@ class Customer
 
 
     /* --------------------------------- GETTER --------------------------------- */
-    public function getIdCustomer()
+    public function getIdBooking()
     {
-        return $this->_idCustomer;
+        return $this->_idBooking;
     }
 
-    public function getFirstname()
+    public function getIdLodge()
     {
-        return $this->_firstname;
+        return $this->_idLodge;
     }
 
-    public function getLastname()
+    public function getArrival()
     {
-        return $this->_lastname;
+        return $this->_arrival;
     }
 
-    public function getEmail()
+    public function getDeparture()
     {
-        return $this->_email;
+        return $this->_departure;
     }
 
 
     /* --------------------------------- SETTER --------------------------------- */
-    public function setIdCustomer($idCustomer)
+    public function setIdBooking(int $idBooking)
     {
-        $this->_idCustomer = $idCustomer;
+        $this->_idBooking = $idBooking;
     }
 
-    public function setFirstname($firstname)
+    public function setIdLodge(int $idLodge)
     {
-        $this->_firstname = $firstname;
+        $this->_idLodge = $idLodge;
     }
-    public function setLastname($lastname)
+    public function setArrival($arrival)
     {
-        $this->_lastname = $lastname;
+        $this->_arrival = $arrival;
     }
-    public function setEmail($email)
+    public function setDeparture($departure)
     {
-        $this->_email = $email;
+        $this->_departure = $departure;
     }
 }

@@ -1,5 +1,4 @@
 <?php
-
 class CustomerManager
 {
     private $_db;
